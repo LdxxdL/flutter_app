@@ -16,14 +16,16 @@ class MyLocalizationsDelegate extends LocalizationsDelegate<MyLocalizations> {
   ///根据locale，创建一个对象用于提供当前locale下的文本显示
   @override
   Future<MyLocalizations> load(Locale locale) {
+    print('---------loadLocal----------${locale.languageCode}');
     return new SynchronousFuture<MyLocalizations>(new MyLocalizations(locale));
   }
 
   @override
   bool shouldReload(LocalizationsDelegate<MyLocalizations> old) {
+    print('-------shouldReload------');
     return false;
   }
 
   ///全局静态的代理
-  // static MyLocalizationsDelegate delegate = new MyLocalizationsDelegate();
+  static MyLocalizationsDelegate delegate = new MyLocalizationsDelegate();
 }

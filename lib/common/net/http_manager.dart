@@ -51,26 +51,23 @@ class HttpManager {
         baseUrl: Config.baseUrl,
         connectTimeout: CONNECT_TIMEOUT,
         receiveTimeout: RECEIVE_TIMEOUT,
-        // responseType: ResponseType.json,
       );
       _client = Dio(options);
       if (Config.isDebug) {
         _client.interceptors
             .add(InterceptorsWrapper(onRequest: (RequestOptions options) {
-          print("\n================== 请求数据 ==========================");
+          print("================== 请求数据 ==========================");
           print("url = ${options.uri.toString()}");
           print("headers = ${options.headers}");
           print("params = ${options.data}");
         }, onResponse: (Response response) {
-          print("\n================== 响应数据 ==========================");
+          print("================== 响应数据 ==========================");
           print("code = ${response.statusCode}");
           print("data = ${response.data}");
-          print("\n");
         }, onError: (DioError e) {
-          print("\n================== 错误响应数据 ======================");
+          print("================== 错误响应数据 ======================");
           print("type = ${e.type}");
           print("message = ${e.message}");
-          print("\n");
         }));
       }
     }
@@ -84,7 +81,7 @@ class HttpManager {
   ///[successCallback] 请求成功回调
   ///[errorCallback] 请求失败回调
   ///[tag] 请求统一标识，用于取消网络请求
-  Future get({
+  get({
     @required String url,
     Map<String, dynamic> params,
     Options options,
@@ -92,7 +89,7 @@ class HttpManager {
     HttpFailureCallback errorCallback,
     @required String tag,
   }) async {
-    _request(
+    return await _request(
       url: url,
       params: params,
       method: GET,
@@ -111,7 +108,7 @@ class HttpManager {
   ///[successCallback] 请求成功回调
   ///[errorCallback] 请求失败回调
   ///[tag] 请求统一标识，用于取消网络请求
-  Future post({
+  post({
     @required String url,
     data,
     // Map<String, dynamic> params,
@@ -120,7 +117,7 @@ class HttpManager {
     HttpFailureCallback errorCallback,
     @required String tag,
   }) async {
-    _request(
+    return await _request(
       url: url,
       data: data,
       method: POST,
@@ -140,7 +137,7 @@ class HttpManager {
   ///[successCallback] 请求成功回调
   ///[errorCallback] 请求失败回调
   ///[tag] 请求统一标识，用于取消网络请求
-  Future _request({
+  Future<dynamic> _request({
     @required String url,
     String method,
     data,
@@ -179,8 +176,10 @@ class HttpManager {
           queryParameters: params,
           options: options,
           cancelToken: cancelToken);
-      successCallback(ResponseTemplate.fromJson(response.data));
-      return response.data;
+      if (successCallback != null) {
+        successCallback(ResponseTemplate.fromJson(response.data));
+      }
+      return ResponseTemplate.fromJson(response.data);
     } on DioError catch (e, s) {
       LogUtil.v("请求出错：$e\n$s");
       if (errorCallback != null && e.type != DioErrorType.CANCEL) {

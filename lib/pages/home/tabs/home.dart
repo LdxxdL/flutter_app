@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class HomeUserView extends StatelessWidget {
+class HomeTabHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Center(
-        child: Text('homePage'),
+        child: Text('HomePage'),
       ),
     );
   }

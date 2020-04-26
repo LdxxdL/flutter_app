@@ -16,7 +16,6 @@ class MyLocalizations {
   MyLocalizations(this.locale);
 
   ///根据不同 locale.languageCode 加载不同语言对应
-  ///GSYStringEn和GSYStringZh都继承了GSYStringBase
   static Map<String, StringBase> _localizedValues =
       myLocaleLibrary.fold({}, (curr, next) {
     curr[next.languageCode] = next;
@@ -30,15 +29,14 @@ class MyLocalizations {
     return _localizedValues["en"];
   }
 
-  ///通过 Localizations 加载当前的 GSYLocalizations
-  ///获取对应的 GSYStringBase
+  ///通过 Localizations 加载当前的 Localizations
+  ///获取对应的 StringBase
   static StringBase of(BuildContext context) {
     return (Localizations.of(context, MyLocalizations) as MyLocalizations)
         .currentLocalized;
   }
 
   ///通过 Localizations 加载当前的 MyLocalizations
-  ///获取对应的 GSYStringBase
   // static StringBase i18n(BuildContext context) {
   //   return (Localizations.of(context, MyLocalizations) as MyLocalizations)
   //       .currentLocalized;

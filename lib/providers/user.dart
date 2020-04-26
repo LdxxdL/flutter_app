@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/common/net/http_manager.dart';
+import 'package:flutter_app/common/services/token.dart';
 import 'package:flutter_app/model/user.dart';
 
 class UserStateModel with ChangeNotifier {
@@ -10,22 +11,25 @@ class UserStateModel with ChangeNotifier {
   bool get isLogin => _isLogin;
 
   UserStateModel() {
-    login('ldx', '123456');
+    // login('ldx', '123456');
+    init();
   }
 
-  void init() async {}
+  void init() async {
+    final userInfo = await getUserByToken();
+    print('-------userinfo--------$userInfo');
+    if (userInfo != null) {
+      this._userInfo = userInfo;
+      notifyListeners();
+    } else {}
+  }
 
-  Future<void> login(String username, String password) async {
-    print("----login-----");
-    dynamic response = await HttpManager().post(
+  login(String username, String password) async {
+    final response = await HttpManager().post(
       url: '/login',
       data: {'username': username, 'password': password},
       tag: 'login',
     );
-    if (response != null) {
-      print('response is -------> ${response.code}');
-      print('response is -------> ${response.message}');
-      print('response is -------> ${response.data.runtimeType.toString()}');
-    }
+    if (response != null) {}
   }
 }
