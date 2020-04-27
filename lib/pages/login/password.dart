@@ -1,33 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/common/services/user.dart';
 import 'package:flutter_app/components/topbar.dart';
-import 'package:flutter_app/pages/login/password.dart';
-import 'package:flutter_app/pages/login/regist.dart';
 
-class LoginPage extends StatefulWidget {
-  static final String pageName = 'login_page';
+class PasswordPage extends StatefulWidget {
+  static final String pageName = 'password_page';
+
+  const PasswordPage({this.mobileNumber});
+  final String mobileNumber;
 
   @override
   State createState() {
-    return new _LoginPageState();
+    return new _PasswordPageState();
   }
 }
 
-class _LoginPageState extends State<LoginPage> {
-  TextEditingController phoneController = new TextEditingController();
+class _PasswordPageState extends State<PasswordPage> {
+  TextEditingController passwordController = new TextEditingController();
   GlobalKey _formKey = new GlobalKey<FormState>();
 
   void _onSubmit() {
     if ((_formKey.currentState as FormState).validate()) {
-      findMobile(phoneController.text, successCallback: (response) {
-        if (response.code == 0) {
-          Navigator.of(context).pushNamed(PasswordPage.pageName,
-              arguments: phoneController.text);
-        } else {
-          Navigator.of(context)
-              .pushNamed(RegistPage.pageName, arguments: phoneController.text);
-        }
-      });
+      loginWithPassword(widget.mobileNumber, passwordController.text);
     }
   }
 
@@ -50,16 +43,16 @@ class _LoginPageState extends State<LoginPage> {
                   autovalidate: true,
                   child: TextFormField(
                     autofocus: true,
-                    controller: phoneController,
-                    keyboardType: TextInputType.phone,
+                    controller: passwordController,
+                    keyboardType: TextInputType.visiblePassword,
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.all(10.0),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
-                        hintText: '输入手机号码'),
+                        hintText: '输入密码'),
                     validator: (v) {
-                      return v.trim().length > 0 ? null : "手机号码不能为空";
+                      return v.trim().length > 0 ? null : "密码不能为空";
                     },
                   )),
               Container(

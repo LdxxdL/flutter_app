@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/common/config.dart';
 import 'package:flutter_app/common/net/http_error.dart';
 import 'package:flutter_app/common/net/utils/log_util.dart';
+import 'package:flutter_app/common/utils/local_storage.dart';
+import 'package:flutter_app/components/common_dialog.dart';
 import 'package:flutter_app/model/response_template.dart';
 
 ///http请求成功回调
@@ -64,10 +66,11 @@ class HttpManager {
           print("================== 响应数据 ==========================");
           print("code = ${response.statusCode}");
           print("data = ${response.data}");
-        }, onError: (DioError e) {
+        }, onError: (DioError e) async {
           print("================== 错误响应数据 ======================");
           print("type = ${e.type}");
           print("message = ${e.message}");
+          await showBaseDialog('请求错误', '服务器错误');
         }));
       }
     }
@@ -162,6 +165,10 @@ class HttpManager {
     params = params ?? {};
     options ??= Options();
     options.method = method ?? 'GET';
+    options.headers ??= {};
+    options.headers.addEntries({
+      'Authorization': 'Bear ${LocalStorage.get(Config.ACCESSTOKEN)}'
+    }.entries);
     // url = _restfulUrl(url, params);
 
     try {
