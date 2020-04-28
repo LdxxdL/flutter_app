@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/common/services/user.dart';
 import 'package:flutter_app/components/topbar.dart';
+import 'package:flutter_app/providers/user.dart';
+import 'package:provider/provider.dart';
 
 class PasswordPage extends StatefulWidget {
   static final String pageName = 'password_page';
@@ -18,9 +20,16 @@ class _PasswordPageState extends State<PasswordPage> {
   TextEditingController passwordController = new TextEditingController();
   GlobalKey _formKey = new GlobalKey<FormState>();
 
-  void _onSubmit() {
+  void _onSubmit(context, userState) async {
     if ((_formKey.currentState as FormState).validate()) {
-      loginWithPassword(widget.mobileNumber, passwordController.text);
+      final result =
+          await loginWithPassword(widget.mobileNumber, passwordController.text);
+      if (result) {
+        userState.getUserInfo();
+        Navigator.of(context).pop();
+      } else {
+        print('-----登录失败------');
+      }
     }
   }
 
@@ -60,16 +69,19 @@ class _PasswordPageState extends State<PasswordPage> {
                 height: 45,
                 margin: EdgeInsets.only(top: 20),
                 child: SizedBox.expand(
-                  child: FlatButton(
-                    color: Colors.blue,
-                    highlightColor: Colors.blue[700],
-                    colorBrightness: Brightness.dark,
-                    splashColor: Colors.grey,
-                    child: Text("Submit"),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0)),
-                    onPressed: _onSubmit,
-                  ),
+                  child: Consumer<UserStateModel>(
+                      builder: (context, userState, child) {
+                    return FlatButton(
+                      color: Colors.blue,
+                      highlightColor: Colors.blue[700],
+                      colorBrightness: Brightness.dark,
+                      splashColor: Colors.grey,
+                      child: Text("Submit"),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0)),
+                      onPressed: () => _onSubmit(context, userState),
+                    );
+                  }),
                 ),
               )
             ],

@@ -21,11 +21,11 @@ class _LoginPageState extends State<LoginPage> {
     if ((_formKey.currentState as FormState).validate()) {
       findMobile(phoneController.text, successCallback: (response) {
         if (response.code == 0) {
-          Navigator.of(context).pushNamed(PasswordPage.pageName,
+          Navigator.of(context).pushReplacementNamed(PasswordPage.pageName,
               arguments: phoneController.text);
         } else {
-          Navigator.of(context)
-              .pushNamed(RegistPage.pageName, arguments: phoneController.text);
+          Navigator.of(context).pushReplacementNamed(RegistPage.pageName,
+              arguments: phoneController.text);
         }
       });
     }

@@ -23,16 +23,20 @@ class HomeTabUser extends StatelessWidget {
                             onPressed: () {
                               Navigator.pushNamed(context, 'login_page');
                             }),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text('姓名：${userstate.userInfo.name ?? ''}',
-                                style: TextStyle(fontSize: 15, height: 2)),
-                            Text('电话：${userstate.userInfo.phone ?? ''}',
-                                style: TextStyle(fontSize: 15, height: 2)),
-                            // Text((userstate.userInfo.age ?? '').toString()),
-                          ],
-                        )
+                        userstate.userInfo == null
+                            ? Text('未登录')
+                            : Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text('姓名：${userstate.userInfo.name ?? ''}',
+                                      style:
+                                          TextStyle(fontSize: 15, height: 2)),
+                                  Text('电话：${userstate.userInfo.mobile ?? ''}',
+                                      style:
+                                          TextStyle(fontSize: 15, height: 2)),
+                                  // Text((userstate.userInfo.age ?? '').toString()),
+                                ],
+                              )
                       ],
                     ),
                   ),

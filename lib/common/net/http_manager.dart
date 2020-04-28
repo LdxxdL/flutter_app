@@ -166,9 +166,8 @@ class HttpManager {
     options ??= Options();
     options.method = method ?? 'GET';
     options.headers ??= {};
-    options.headers.addEntries({
-      'Authorization': 'Bear ${LocalStorage.get(Config.ACCESSTOKEN)}'
-    }.entries);
+    final accessToken = await LocalStorage.get(Config.ACCESSTOKEN);
+    options.headers.addEntries({'Authorization': 'Bear $accessToken'}.entries);
     // url = _restfulUrl(url, params);
 
     try {

@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    print('------buildApp----');
     UserStateModel userState = UserStateModel();
     // SystemModel systemModel = SystemModel();
     return MultiProvider(
@@ -23,6 +24,9 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider.value(
             value: userState,
           ),
+//        ChangeNotifierProvider(
+//          create: (_) => UserStateModel(),
+//        ),
           ChangeNotifierProvider(
             create: (_) => HomeStateModel(),
           ),

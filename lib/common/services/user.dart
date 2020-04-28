@@ -44,6 +44,7 @@ loginWithPassword(String mobile, String password,
   if (response.code == 0) {
     LocalStorage.save(Config.ACCESSTOKEN, response.data[Config.ACCESSTOKEN]);
     LocalStorage.save(Config.REFRESHTOKEN, response.data[Config.REFRESHTOKEN]);
+    return true;
   }
-  return response;
+  return false;
 }
